@@ -1784,7 +1784,7 @@ class SimpleGenDataset(TextDataset):
             self.feats = torch.load(savep)
         else:
             logger.info("Reading examples from {}".format(file_path))
-            data = read_jsonl(file_path)
+            data = read_jsonl(file_path)[:args.sample_num]
             for i in range(len(data)):
                 data[i]["idx"] = i
             logger.info(f"Tokenize examples: {file_path}")
@@ -1799,11 +1799,15 @@ class SimpleGenDataset(TextDataset):
             diff= dic["patch"]
         elif "diff" in dic:
             diff = dic["diff"]
+        elif "original_string" in dic:
+            diff = dic["original_string"]
             
         if "msg" in dic:
             msg = dic["msg"]
         elif "nl" in dic:
             msg = dic["nl"]
+        elif "docstring" in dic:
+            msg = dic["docstring"]
         else:
             msg = ""
 

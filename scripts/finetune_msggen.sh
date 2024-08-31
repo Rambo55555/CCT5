@@ -1,13 +1,15 @@
 #!/bin/bash
 
 CURRENT_DIR=`pwd`
+CURRENT_DIR="/data/DataLACP/rambo/data/cct5"
 NCCL_DEBUG=INFO
-LANG='java'
+LANG='fira'
 GPU_ID=0
 PRETRAINED_MODEL_DIR="$CURRENT_DIR/models/pre-training/Gen"
 MODEL_PATH="$CURRENT_DIR/models/pre-training/Gen/pytorch_model.bin"
 FINETUNED_MODEL_PATH="$CURRENT_DIR/models/fine-tuning/MsgGeneration/$LANG/pytorch_model.bin"
 EVAL_FLAG=false
+sample_num=-1
 
 usage() {
   echo "Usage: ${0} [-l] [-g] [-e]" 1>&2
@@ -45,12 +47,12 @@ function finetune() {
           --train_filename ${CURRENT_DIR}/Dataset/fine-tuning/CommitMsgGeneration/train_${LANG}_random.jsonl \
           --dev_filename ${CURRENT_DIR}/Dataset/fine-tuning/CommitMsgGeneration/valid_${LANG}_random.jsonl \
           --test_filename ${CURRENT_DIR}/Dataset/fine-tuning/CommitMsgGeneration/test_${LANG}_random.jsonl \
+          --sample_num $sample_num \
           --model_type codet5_CC \
           --warmup_steps 500 \
           --learning_rate 3e-4 \
           --tokenizer_name Salesforce/codet5-base \
           --model_name_or_path "Salesforce/codet5-base" \
-          --load_model_path $MODEL_PATH \
           --output_dir ${CURRENT_DIR}/outputs/models/fine-tuning/CommitMsgGeneration/${LANG} \
           --always_save_model \
           --train_batch_size 32 \
@@ -62,6 +64,7 @@ function finetune() {
           --save_steps 5000 \
           --log_steps 5 \
           --train_steps 300000 \
+          --num_train_epochs 30 \
           --beam_size 5 \
           --evaluate_sample_size -1
     else
@@ -75,7 +78,6 @@ function finetune() {
           --learning_rate 3e-4 \
           --tokenizer_name Salesforce/codet5-base \
           --model_name_or_path "Salesforce/codet5-base" \
-          --load_model_path $MODEL_PATH \
           --output_dir ${CURRENT_DIR}/outputs/models/fine-tuning/CommitMsgGeneration/${LANG} \
           --always_save_model \
           --train_batch_size 32 \

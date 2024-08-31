@@ -1,8 +1,9 @@
+import os
+os.environ['HUGGINGFACE_CO_RESOLVE_ENDPOINT'] = 'https://hf-mirror.com'
 import argparse
 import json
 import logging
 import multiprocessing
-import os
 import random
 import sys
 import time
@@ -320,6 +321,8 @@ def eval_bleu_epoch(args, eval_dataloader, eval_filename, model, tokenizer, outp
                 msg = js["msg"]
             elif "nl" in js:
                 msg = js["nl"]
+            elif "docstring" in js:
+                msg = js["docstring"]
             else:
                 continue
             all_golds.append(msg)

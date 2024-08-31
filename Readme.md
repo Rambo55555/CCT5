@@ -48,6 +48,11 @@ To evaluate the performance of a specific checkpoint, add the flag "-e" followed
 
 ```bash
 bash scripts/finetune_msggen.sh -g [GPU_ID] -l [cpp/csharp/java/javascript/python/fira] -e [path_to_model]
+
+conda env config vars set XDG_CACHE_HOME=/data/DataLACP/rambo/.cache
+bash scripts/finetune_msggen.sh -g 0 -l fira -c
+
+pkill -f finetune_msg_gen.py
 ```
 Note that if [path_to_model] is blank, this script will automatically evaluate our released checkpoint.
 
@@ -119,3 +124,8 @@ We reused some code from open-source repositories. We would like to extend our g
   year={2023}
 }
 ```
+
+# 结果：
+用CodeT5 finetune结果：Test BLEU: 18.84, Test ACC: 1.4882506527415142
+
+用CCT5 finetune结果：Test BLEU: 18.12, Test ACC: 1.3315926892950392

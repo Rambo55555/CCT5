@@ -46,6 +46,8 @@ def add_args(parser):
                         help="The dev filename. Should contain the .jsonl files for this task.")
     parser.add_argument("--test_filename", default=None, type=str,
                         help="The test filename. Should contain the .jsonl files for this task.")
+    parser.add_argument("--sample_num", default=-1, type=int,
+                        help="The number of samples to use for training.")
     parser.add_argument("--test_features_filename", default=None, type=str,
                         help="The test feature filename. Should contain the .pkl files for this task.")
     parser.add_argument(
